@@ -69,8 +69,8 @@ public class HttpManager {
         okHttpClientBuilder.retryOnConnectionFailure(true)   //连接失败后是否重新连接
                 .connectTimeout(timeOut, TimeUnit.SECONDS)   //从主机读取数据超时
                 .readTimeout(timeOut, TimeUnit.SECONDS)      //从主机读数据超时
-                .writeTimeout(timeOut, TimeUnit.SECONDS);     //从主机写数据超时
-//                .proxy(Proxy.NO_PROXY);                      //禁止使用代理
+                .writeTimeout(timeOut, TimeUnit.SECONDS)     //从主机写数据超时
+                .proxy(Proxy.NO_PROXY);                      //禁止使用代理
     }
 
     public void build() {
