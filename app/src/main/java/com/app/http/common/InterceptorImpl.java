@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.app.http.App;
 import com.app.http.CommonParams;
 import com.app.http.HttpInterceptor;
+import com.app.http.MainActivity;
 import com.app.http.error.BIZException;
 import com.app.http.error.ErrorModel;
 import com.app.http.util.HttpHandler;
@@ -118,10 +119,27 @@ public final class InterceptorImpl implements HttpInterceptor {
      * @return ErrorModel
      */
     private ErrorModel handleBIZ(final ErrorModel errorModel) {
+        //请求URL
+        final String url = errorModel.getUrl();
+        //服务级-result-message
+        final String msg = errorModel.getMessage();
+        //服务级-result-code
+        int code = errorModel.getCode();
+
+        //可在此处做统一业务处理(解耦)
+        if (code == Errors.Code.CODE_TILE_OUT) {
+            //loginTimeOut();
+        }
+
         HttpHandler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(App.getInstance(), errorModel.getMessage(), Toast.LENGTH_SHORT).show();
+                if (url.contains(Apis.APP_RECOMEND)) { //判断是否是某个接口
+                    showBIZDialog(msg);
+                }
+                else {
+                    //...
+                }
             }
         });
         return errorModel;
@@ -154,4 +172,21 @@ public final class InterceptorImpl implements HttpInterceptor {
         return response.newBuilder().body(responseBody).build();
     }
 
+    private void showBIZDialog(String msg){
+        //创建dialog构造器
+        AlertDialog.Builder mDialog = new AlertDialog.Builder(MainActivity.getInstance());
+        //设置title
+        mDialog.setTitle("业务级异常");
+        //设置内容
+        mDialog.setMessage(msg);
+        //设置按钮
+        mDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        //创建并显示
+        mDialog.create().show();
+    }
 }

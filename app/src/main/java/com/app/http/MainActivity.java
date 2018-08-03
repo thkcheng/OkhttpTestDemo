@@ -26,15 +26,22 @@ public class MainActivity extends AppCompatActivity {
 
     TextView tvData;
 
+    public static MainActivity instance;
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        instance = this;
 
         tvData = findViewById(R.id.tvData);
 
         //两秒钟之内只取一个点击事件,防多次点击
-        RxView.clicks(findViewById(R.id.btn2)).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Consumer<Object>() {
+        RxView.clicks(findViewById(R.id.btn2)).throttleFirst(2, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
                 postRecommend();
