@@ -6,7 +6,6 @@ package com.app.http.common;
 
 public class Apis {
 
-//    public static final String BASE_URL = "http://api.228.cn/";
     public static final String BASE_URL = "http://192.168.2.110:8888/mobileserver/";
 
     public static final String APP_INDEX = BASE_URL + "index";
